@@ -3,15 +3,18 @@ const namaHari = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"
 const sekarang = new Date();
 const hariIni = namaHari[sekarang.getDay()];
 
-document.getElementById("tanggal-hari-ini").textContent = 
-    `${hariIni}, ${sekarang.toLocaleDateString("id-ID", { day: 'numeric', month: 'long', year: 'numeric' })}`;
+const tanggalEl = document.getElementById("tanggal-hari-ini");
+if (tanggalEl) {
+    tanggalEl.textContent = `${hariIni}, ${sekarang.toLocaleDateString("id-ID", { day: 'numeric', month: 'long', year: 'numeric' })}`;
+}
 
-function bukaTab(idTab) {
+function bukaTab(idTab, elemenTombol) {
     document.querySelectorAll(".tab-content").forEach(tab => tab.classList.remove("active"));
     document.querySelectorAll(".tab-btn").forEach(btn => btn.classList.remove("active"));
 
-    document.getElementById(idTab).classList.add("active");
-    event.currentTarget.classList.add("active");
+    const targetTab = document.getElementById(idTab);
+    if (targetTab) targetTab.classList.add("active");
+    if (elemenTombol) elemenTombol.classList.add("active");
 }
 
 // --- 2. PENYIMPANAN LOKAL (LOCALSTORAGE) ---
@@ -30,27 +33,31 @@ const formJadwal = document.getElementById("form-jadwal");
 const listJadwalEl = document.getElementById("daftar-jadwal");
 const pilihJadwalEl = document.getElementById("pilih-jadwal");
 
-formJadwal.addEventListener("submit", function(e) {
-    e.preventDefault();
-    const hari = document.getElementById("hari-jadwal").value;
-    const jam = document.getElementById("jam-jadwal").value;
-    const mapel = document.getElementById("mapel-jadwal").value.trim();
+if (formJadwal) {
+    formJadwal.addEventListener("submit", function(e) {
+        e.preventDefault();
+        const hari = document.getElementById("hari-jadwal").value;
+        const jam = document.getElementById("jam-jadwal").value;
+        const mapel = document.getElementById("mapel-jadwal").value.trim();
 
-    // Tambahkan langsung ke daftar HTML di tab Jadwal
-    const li = document.createElement("li");
-    li.className = "list-item";
-    li.innerHTML = `<div><strong>${hari} (${jam})</strong><br><span>${mapel}</span></div>`;
-    listJadwalEl.appendChild(li);
+        if (listJadwalEl) {
+            const li = document.createElement("li");
+            li.className = "list-item";
+            li.innerHTML = `<div><strong>${hari} (${jam})</strong><br><span>${mapel}</span></div>`;
+            listJadwalEl.appendChild(li);
+        }
 
-    // Tambahkan juga ke dropdown Absensi
-    const option = document.createElement("option");
-    option.value = `${hari} - ${mapel} (${jam})`;
-    option.textContent = `${hari} | ${jam} - ${mapel}`;
-    pilihJadwalEl.appendChild(option);
+        if (pilihJadwalEl) {
+            const option = document.createElement("option");
+            option.value = `${hari} - ${mapel} (${jam})`;
+            option.textContent = `${hari} | ${jam} - ${mapel}`;
+            pilihJadwalEl.appendChild(option);
+        }
 
-    formJadwal.reset();
-    alert("Jadwal tambahan berhasil dimasukkan!");
-});
+        formJadwal.reset();
+        alert("Jadwal tambahan berhasil dimasukkan!");
+    });
+}
 
 // --- 4. FITUR ABSENSI HARIAN ---
 const inputNamaSiswa = document.getElementById("input-nama-siswa");
@@ -58,15 +65,17 @@ const btnTambahSiswa = document.getElementById("btn-tambah-siswa");
 const listAbsensiEl = document.getElementById("daftar-absensi-siswa");
 const btnSimpanAbsensi = document.getElementById("btn-simpan-absensi");
 
-btnTambahSiswa.addEventListener("click", function() {
-    const nama = inputNamaSiswa.value.trim();
-    if (!nama) return;
+if (btnTambahSiswa) {
+    btnTambahSiswa.addEventListener("click", function() {
+        const nama = inputNamaSiswa.value.trim();
+        if (!nama) return;
 
-    daftarSiswa.push({ id: Date.now(), nama });
-    simpanKeMemori();
-    inputNamaSiswa.value = "";
-    tampilkanDaftarSiswa();
-});
+        daftarSiswa.push({ id: Date.now(), nama });
+        simpanKeMemori();
+        inputNamaSiswa.value = "";
+        tampilkanDaftarSiswa();
+    });
+}
 
 function hapusSiswa(id) {
     daftarSiswa = daftarSiswa.filter(s => s.id !== id);
@@ -75,6 +84,7 @@ function hapusSiswa(id) {
 }
 
 function tampilkanDaftarSiswa() {
+    if (!listAbsensiEl) return;
     listAbsensiEl.innerHTML = "";
     daftarSiswa.forEach(siswa => {
         const li = document.createElement("li");
@@ -95,36 +105,38 @@ function tampilkanDaftarSiswa() {
     });
 }
 
-btnSimpanAbsensi.addEventListener("click", function() {
-    const jadwalDipilih = pilihJadwalEl.value;
-    if (!jadwalDipilih) {
-        alert("Pilih mata pelajaran terlebih dahulu!");
-        return;
-    }
+if (btnSimpanAbsensi) {
+    btnSimpanAbsensi.addEventListener("click", function() {
+        const jadwalDipilih = pilihJadwalEl.value;
+        if (!jadwalDipilih) {
+            alert("Pilih mata pelajaran terlebih dahulu!");
+            return;
+        }
 
-    if (daftarSiswa.length === 0) {
-        alert("Tambahkan minimal satu nama siswa terlebih dahulu!");
-        return;
-    }
+        if (daftarSiswa.length === 0) {
+            alert("Tambahkan minimal satu nama siswa terlebih dahulu!");
+            return;
+        }
 
-    const catatan = [];
-    document.querySelectorAll(".status-siswa").forEach(select => {
-        catatan.push({
-            nama: select.getAttribute("data-nama"),
-            status: select.value
+        const catatan = [];
+        document.querySelectorAll(".status-siswa").forEach(select => {
+            catatan.push({
+                nama: select.getAttribute("data-nama"),
+                status: select.value
+            });
         });
-    });
 
-    riwayatAbsensi.push({
-        tanggal: new Date().toLocaleDateString("id-ID"),
-        jadwal: jadwalDipilih,
-        data: catatan
-    });
+        riwayatAbsensi.push({
+            tanggal: new Date().toLocaleDateString("id-ID"),
+            jadwal: jadwalDipilih,
+            data: catatan
+        });
 
-    simpanKeMemori();
-    tampilkanRiwayatAbsensi();
-    alert(`Absensi untuk ${jadwalDipilih} berhasil disimpan!`);
-});
+        simpanKeMemori();
+        tampilkanRiwayatAbsensi();
+        alert(`Absensi untuk ${jadwalDipilih} berhasil disimpan!`);
+    });
+}
 
 // --- 5. FUNGSI MENAMPILKAN REKAP RIWAYAT ABSENSI ---
 const listRiwayatEl = document.getElementById("daftar-riwayat-absensi");
@@ -136,6 +148,7 @@ function hapusRiwayat(index) {
 }
 
 function tampilkanRiwayatAbsensi() {
+    if (!listRiwayatEl) return;
     listRiwayatEl.innerHTML = "";
 
     if (riwayatAbsensi.length === 0) {
@@ -164,20 +177,22 @@ function tampilkanRiwayatAbsensi() {
     });
 }
 
-// --- 6. FITUR PENGINGAT TUGAS (URUT TENGGAT WAKTU) ---
+// --- 6. FITUR PENGINGAT TUGAS ---
 const formTugas = document.getElementById("form-tugas");
 const listTugasEl = document.getElementById("daftar-tugas");
 
-formTugas.addEventListener("submit", function(e) {
-    e.preventDefault();
-    const nama = document.getElementById("nama-tugas").value.trim();
-    const deadline = document.getElementById("deadline-tugas").value;
+if (formTugas) {
+    formTugas.addEventListener("submit", function(e) {
+        e.preventDefault();
+        const nama = document.getElementById("nama-tugas").value.trim();
+        const deadline = document.getElementById("deadline-tugas").value;
 
-    daftarTugas.push({ id: Date.now(), nama, deadline });
-    simpanKeMemori();
-    formTugas.reset();
-    tampilkanTugas();
-});
+        daftarTugas.push({ id: Date.now(), nama, deadline });
+        simpanKeMemori();
+        formTugas.reset();
+        tampilkanTugas();
+    });
+}
 
 function hapusTugas(id) {
     daftarTugas = daftarTugas.filter(t => t.id !== id);
@@ -186,6 +201,7 @@ function hapusTugas(id) {
 }
 
 function tampilkanTugas() {
+    if (!listTugasEl) return;
     listTugasEl.innerHTML = "";
     const tugasTerurut = [...daftarTugas].sort((a, b) => new Date(a.deadline) - new Date(b.deadline));
 
@@ -212,9 +228,7 @@ tampilkanDaftarSiswa();
 tampilkanTugas();
 tampilkanRiwayatAbsensi();
 
-// Daftarkan Service Worker agar bisa jalan Offline
 if ("serviceWorker" in navigator) {
     navigator.serviceWorker.register("sw.js")
-        .then(() => console.log("Mode offline siap digunakan!"))
         .catch(err => console.log("Gagal memuat mode offline:", err));
 }
