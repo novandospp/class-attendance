@@ -34,7 +34,7 @@
         <section id="tab-absensi" class="tab-content active">
             <h2>Absensi Hari Ini</h2>
             
-            <!-- Pilih Jadwal Pelajaran yang sudah tertanam langsung di HTML -->
+            <!-- Pilih Jadwal Pelajaran -->
             <div class="card">
                 <label for="pilih-jadwal">Pilih Mata Pelajaran / Sesi:</label>
                 <select id="pilih-jadwal">
@@ -89,6 +89,14 @@
 
                 <button id="btn-simpan-absensi" class="btn-primary">Simpan Absensi Sesi Ini</button>
             </div>
+
+            <!-- Bagian Riwayat Absensi yang Baru Ditambahkan -->
+            <div class="card">
+                <h3>📋 Riwayat Absensi Tersimpan</h3>
+                <ul id="daftar-riwayat-absensi" class="list-container">
+                    <!-- Rekap absensi akan muncul otomatis di sini -->
+                </ul>
+            </div>
         </section>
 
         <!-- 2. TAB PENGATURAN JADWAL -->
@@ -119,7 +127,6 @@
 
             <h3>Daftar Jadwal Kelas XI - B</h3>
             <ul id="daftar-jadwal" class="list-container">
-                <!-- Jadwal bawaan langsung tertulis di HTML -->
                 <li class="list-item"><div><strong>Senin (07:30 - 09:30)</strong><br><span>B ING - Laily Fadiyah Kahar, S.Pd.</span></div></li>
                 <li class="list-item"><div><strong>Senin (10:00 - 13:50)</strong><br><span>FIS - Reni Anjarwati, S.Pd</span></div></li>
                 <li class="list-item"><div><strong>Senin (13:50 - 15:10)</strong><br><span>SNBD - Yuda Eli Riyanto, S.Pd</span></div></li>
