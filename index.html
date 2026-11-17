@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jadwal, Absensi & Pengingat Tugas</title>
+    
+    <!-- Menghubungkan ke file CSS -->
+    <link rel="stylesheet" href="style.css">
+    
+    <!-- Menghubungkan ke manifest.json agar bisa diinstal di HP -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#2563eb">
+</head>
+<body>
+
+    <!-- Bagian Atas (Header) -->
+    <header>
+        <h1>📚 Asisten Kelas</h1>
+        <p id="tanggal-hari-ini">Memuat tanggal...</p>
+    </header>
+
+    <!-- Menu Navigasi Tab -->
+    <nav class="tab-nav">
+        <button class="tab-btn active" onclick="bukaTab('tab-absensi')">✅ Absensi</button>
+        <button class="tab-btn" onclick="bukaTab('tab-jadwal')">📅 Jadwal</button>
+        <button class="tab-btn" onclick="bukaTab('tab-tugas')">⏰ Tugas</button>
+    </nav>
+
+    <!-- Konten Utama -->
+    <main>
+        
+        <!-- 1. TAB ABSENSI HARIAN -->
+        <section id="tab-absensi" class="tab-content active">
+            <h2>Absensi Hari Ini</h2>
+            
+            <!-- Pilih Jadwal Pelajaran yang sedang berlangsung -->
+            <div class="card">
+                <label for="pilih-jadwal">Pilih Mata Pelajaran / Sesi:</label>
+                <select id="pilih-jadwal">
+                    <option value="">-- Pilih Jadwal --</option>
+                    <!-- Opsi jadwal akan diisi otomatis oleh JavaScript -->
+                </select>
+            </div>
+
+            <!-- Form Tambah Nama Siswa (Jika daftar siswa belum ada) -->
+            <div class="card">
+                <h3>Daftar Siswa</h3>
+                <div class="input-group">
+                    <input type="text" id="input-nama-siswa" placeholder="Ketik nama siswa...">
+                    <button id="btn-tambah-siswa">+ Tambah</button>
+                </div>
+
+                <!-- Daftar Siswa untuk Diabsen -->
+                <ul id="daftar-absensi-siswa" class="list-container">
+                    <!-- Daftar siswa akan muncul di sini lewat JavaScript -->
+                </ul>
+
+                <button id="btn-simpan-absensi" class="btn-primary">Simpan Absensi Sesi Ini</button>
+            </div>
+        </section>
+
+        <!-- 2. TAB PENGATURAN JADWAL -->
+        <section id="tab-jadwal" class="tab-content">
+            <h2>Atur Jadwal Pelajaran</h2>
+            
+            <div class="card">
+                <form id="form-jadwal">
+                    <label for="hari-jadwal">Hari:</label>
+                    <select id="hari-jadwal" required>
+                        <option value="Senin">Senin</option>
+                        <option value="Selasa">Selasa</option>
+                        <option value="Rabu">Rabu</option>
+                        <option value="Kamis">Kamis</option>
+                        <option value="Jumat">Jumat</option>
+                        <option value="Sabtu">Sabtu</option>
+                    </select>
+
+                    <label for="jam-jadwal">Jam Pelajaran:</label>
+                    <input type="time" id="jam-jadwal" required>
+
+                    <label for="mapel-jadwal">Mata Pelajaran:</label>
+                    <input type="text" id="mapel-jadwal" placeholder="Contoh: Matematika" required>
+
+                    <button type="submit" class="btn-primary">+ Simpan Jadwal</button>
+                </form>
+            </div>
+
+            <h3>Daftar Jadwal Tersimpan</h3>
+            <ul id="daftar-jadwal" class="list-container">
+                <!-- Daftar jadwal akan tampil di sini -->
+            </ul>
+        </section>
+
+        <!-- 3. TAB PENGINGAT TUGAS -->
+        <section id="tab-tugas" class="tab-content">
+            <h2>Pengingat Tugas</h2>
+
+            <div class="card">
+                <form id="form-tugas">
+                    <label for="nama-tugas">Nama Tugas:</label>
+                    <input type="text" id="nama-tugas" placeholder="Contoh: Merangkum Bab 3 Sejarah" required>
+
+                    <label for="deadline-tugas">Tenggat Waktu (Deadline):</label>
+                    <input type="date" id="deadline-tugas" required>
+
+                    <button type="submit" class="btn-primary">+ Tambah Tugas</button>
+                </form>
+            </div>
+
+            <h3>Daftar Tugas (Urut Tenggat Terdekat)</h3>
+            <ul id="daftar-tugas" class="list-container">
+                <!-- Daftar tugas akan diurutkan otomatis oleh JavaScript -->
+            </ul>
+        </section>
+
+    </main>
+
+    <!-- Menghubungkan ke file JavaScript -->
+    <script src="script.js"></script>
+</body>
+</html>
