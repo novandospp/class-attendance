@@ -7,20 +7,54 @@ document.getElementById("tanggal-hari-ini").textContent =
     `${hariIni}, ${sekarang.toLocaleDateString("id-ID", { day: 'numeric', month: 'long', year: 'numeric' })}`;
 
 function bukaTab(idTab) {
-    // Sembunyikan semua tab & hapus status aktif pada tombol
     document.querySelectorAll(".tab-content").forEach(tab => tab.classList.remove("active"));
     document.querySelectorAll(".tab-btn").forEach(btn => btn.classList.remove("active"));
 
-    // Tampilkan tab yang dipilih
     document.getElementById(idTab).classList.add("active");
     event.currentTarget.classList.add("active");
 }
 
-// --- 2. PENYIMPANAN LOKAL (LOCALSTORAGE) ---
+// --- 2. DATA JADWAL BAWAAN KELAS XI - B ---
+const jadwalBawaan = [
+    // SENIN
+    { id: 101, hari: "Senin", jam: "07:30 - 09:30", mapel: "B ING (Laily Fadiyah Kahar, S.Pd.)" },
+    { id: 102, hari: "Senin", jam: "10:00 - 13:50", mapel: "FIS (Reni Anjarwati, S.Pd)" },
+    { id: 103, hari: "Senin", jam: "13:50 - 15:10", mapel: "SNBD (Yuda Eli Riyanto, S.Pd)" },
+
+    // SELASA
+    { id: 201, hari: "Selasa", jam: "07:30 - 09:30", mapel: "INFT (Yopy Adiantoro, S.Pd.)" },
+    { id: 202, hari: "Selasa", jam: "10:00 - 12:00", mapel: "B INDO (Nurhuda, S.Pd.)" },
+    { id: 203, hari: "Selasa", jam: "12:30 - 13:50", mapel: "MAT UM (Lutvi Mahfudiyah, S.Si.)" },
+    { id: 204, hari: "Selasa", jam: "13:50 - 15:10", mapel: "B JAWA (Titis Reka Anggraini, S.Pd.)" },
+
+    // RABU
+    { id: 301, hari: "Rabu", jam: "07:30 - 09:30", mapel: "PJOK (Indriana Puspitasari, S.Pd)" },
+    { id: 302, hari: "Rabu", jam: "10:00 - 12:00", mapel: "P AGM (Dr. M. Nur Alam Fajar Syam, M.Pd)" },
+    { id: 303, hari: "Rabu", jam: "12:30 - 13:50", mapel: "SJRH (Defri Murain Palupiyana, S.Pd.)" },
+    { id: 304, hari: "Rabu", jam: "13:50 - 15:10", mapel: "INFT (Yopy Adiantoro, S.Pd.)" },
+
+    // KAMIS
+    { id: 401, hari: "Kamis", jam: "07:30 - 11:20", mapel: "KIM (Syaikul Anam, S.Pd.)" },
+    { id: 402, hari: "Kamis", jam: "11:20 - 13:50", mapel: "BIO (Nindia Ayutrisna, S.Pd)" },
+    { id: 403, hari: "Kamis", jam: "13:50 - 15:10", mapel: "PPKN (Wiwin Nardianto, S.Pd)" },
+
+    // JUMAT
+    { id: 501, hari: "Jumat", jam: "07:00 - 08:20", mapel: "BIO (Nindia Ayutrisna, S.Pd)" },
+    { id: 502, hari: "Jumat", jam: "08:20 - 09:55", mapel: "MAT UM (Lutvi Mahfudiyah, S.Si.)" },
+    { id: 503, hari: "Jumat", jam: "09:55 - 11:15", mapel: "PKWU (Dian Fatma Budianda, S.Pd.)" }
+];
+
+// --- 3. PENYIMPANAN LOKAL (LOCALSTORAGE) ---
 let daftarSiswa = JSON.parse(localStorage.getItem("data_siswa")) || [];
-let daftarJadwal = JSON.parse(localStorage.getItem("data_jadwal")) || [];
 let daftarTugas = JSON.parse(localStorage.getItem("data_tugas")) || [];
 let riwayatAbsensi = JSON.parse(localStorage.getItem("data_absensi")) || [];
+
+// Jika memori jadwal masih kosong, otomatis isi dengan jadwalBawaan XI - B
+let daftarJadwal = JSON.parse(localStorage.getItem("data_jadwal"));
+if (!daftarJadwal || daftarJadwal.length === 0) {
+    daftarJadwal = jadwalBawaan;
+    localStorage.setItem("data_jadwal", JSON.stringify(daftarJadwal));
+}
 
 function simpanKeMemori() {
     localStorage.setItem("data_siswa", JSON.stringify(daftarSiswa));
@@ -29,7 +63,7 @@ function simpanKeMemori() {
     localStorage.setItem("data_absensi", JSON.stringify(riwayatAbsensi));
 }
 
-// --- 3. FITUR JADWAL PELAJARAN ---
+// --- 4. FITUR JADWAL PELAJARAN ---
 const formJadwal = document.getElementById("form-jadwal");
 const listJadwalEl = document.getElementById("daftar-jadwal");
 const pilihJadwalEl = document.getElementById("pilih-jadwal");
@@ -54,10 +88,10 @@ function hapusJadwal(id) {
 
 function tampilkanJadwal() {
     listJadwalEl.innerHTML = "";
-    pilihJadwalEl.innerHTML = '<option value="">-- Pilih Jadwal Hari Ini --</option>';
+    pilihJadwalEl.innerHTML = '<option value="">-- Pilih Mata Pelajaran --</option>';
 
     daftarJadwal.forEach(jadwal => {
-        // Tampilkan di Tab Jadwal
+        // Tampilkan semua jadwal di Tab Jadwal
         const li = document.createElement("li");
         li.className = "list-item";
         li.innerHTML = `
@@ -69,17 +103,21 @@ function tampilkanJadwal() {
         `;
         listJadwalEl.appendChild(li);
 
-        // Masukkan ke pilihan dropdown Absensi jika harinya cocok dengan hari ini
+        // Masukkan ke pilihan dropdown Absensi
+        const option = document.createElement("option");
+        option.value = `${jadwal.hari} - ${jadwal.mapel} (${jadwal.jam})`;
+        
+        // Tandai jika jadwal sesuai hari ini agar mudah ditemukan
         if (jadwal.hari === hariIni) {
-            const option = document.createElement("option");
-            option.value = `${jadwal.mapel} (${jadwal.jam})`;
-            option.textContent = `${jadwal.jam} - ${jadwal.mapel}`;
-            pilihJadwalEl.appendChild(option);
+            option.textContent = `⭐ [HARI INI] ${jadwal.jam} - ${jadwal.mapel}`;
+        } else {
+            option.textContent = `${jadwal.hari} (${jadwal.jam}) - ${jadwal.mapel}`;
         }
+        pilihJadwalEl.appendChild(option);
     });
 }
 
-// --- 4. FITUR ABSENSI HARIAN ---
+// --- 5. FITUR ABSENSI HARIAN ---
 const inputNamaSiswa = document.getElementById("input-nama-siswa");
 const btnTambahSiswa = document.getElementById("btn-tambah-siswa");
 const listAbsensiEl = document.getElementById("daftar-absensi-siswa");
@@ -125,7 +163,7 @@ function tampilkanDaftarSiswa() {
 btnSimpanAbsensi.addEventListener("click", function() {
     const jadwalDipilih = pilihJadwalEl.value;
     if (!jadwalDipilih) {
-        alert("Pilih mata pelajaran / sesi jadwal terlebih dahulu!");
+        alert("Pilih mata pelajaran terlebih dahulu!");
         return;
     }
 
@@ -144,10 +182,10 @@ btnSimpanAbsensi.addEventListener("click", function() {
     });
 
     simpanKeMemori();
-    alert(`Absensi untuk ${jadwalDipilih} berhasil disimpan di memori HP!`);
+    alert(`Absensi untuk ${jadwalDipilih} berhasil disimpan!`);
 });
 
-// --- 5. FITUR PENGINGAT TUGAS (URUT TENGGAT WAKTU) ---
+// --- 6. FITUR PENGINGAT TUGAS (URUT TENGGAT WAKTU) ---
 const formTugas = document.getElementById("form-tugas");
 const listTugasEl = document.getElementById("daftar-tugas");
 
@@ -170,15 +208,11 @@ function hapusTugas(id) {
 
 function tampilkanTugas() {
     listTugasEl.innerHTML = "";
-
-    // Urutkan tugas berdasarkan tanggal deadline paling dekat
     const tugasTerurut = [...daftarTugas].sort((a, b) => new Date(a.deadline) - new Date(b.deadline));
 
     tugasTerurut.forEach(tugas => {
         const tglDeadline = new Date(tugas.deadline);
         const selisihHari = Math.ceil((tglDeadline - sekarang) / (1000 * 60 * 60 * 24));
-        
-        // Beri warna merah jika deadline <= 1 hari lagi, hijau jika masih lama
         const kelasWarna = selisihHari <= 1 ? "tugas-mendesak" : "tugas-aman";
 
         const li = document.createElement("li");
@@ -194,12 +228,11 @@ function tampilkanTugas() {
     });
 }
 
-// --- 6. JALANKAN SAAT HALAMAN PERTAMA DIBUKA ---
+// --- 7. JALANKAN SAAT HALAMAN PERTAMA DIBUKA ---
 tampilkanJadwal();
 tampilkanDaftarSiswa();
 tampilkanTugas();
 
-// Daftarkan Service Worker agar bisa jalan Offline
 if ("serviceWorker" in navigator) {
     navigator.serviceWorker.register("sw.js")
         .then(() => console.log("Mode offline siap digunakan!"))
