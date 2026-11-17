@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jadwal, Absensi & Pengingat Tugas</title>
+    <title>Jadwal, Absensi & Tugas - XI B</title>
     
     <!-- Menghubungkan ke file CSS -->
     <link rel="stylesheet" href="style.css">
@@ -16,7 +16,7 @@
 
     <!-- Bagian Atas (Header) -->
     <header>
-        <h1>📚 Asisten Kelas</h1>
+        <h1>📚 Asisten Kelas XI - B</h1>
         <p id="tanggal-hari-ini">Memuat tanggal...</p>
     </header>
 
@@ -34,16 +34,47 @@
         <section id="tab-absensi" class="tab-content active">
             <h2>Absensi Hari Ini</h2>
             
-            <!-- Pilih Jadwal Pelajaran yang sedang berlangsung -->
+            <!-- Pilih Jadwal Pelajaran yang sudah tertanam langsung di HTML -->
             <div class="card">
                 <label for="pilih-jadwal">Pilih Mata Pelajaran / Sesi:</label>
                 <select id="pilih-jadwal">
-                    <option value="">-- Pilih Jadwal --</option>
-                    <!-- Opsi jadwal akan diisi otomatis oleh JavaScript -->
+                    <option value="">-- Pilih Mata Pelajaran --</option>
+                    
+                    <optgroup label="Senin">
+                        <option value="Senin - B ING (07:30 - 09:30)">07:30 - 09:30 | B ING (Laily Fadiyah Kahar, S.Pd.)</option>
+                        <option value="Senin - FIS (10:00 - 13:50)">10:00 - 13:50 | FIS (Reni Anjarwati, S.Pd)</option>
+                        <option value="Senin - SNBD (13:50 - 15:10)">13:50 - 15:10 | SNBD (Yuda Eli Riyanto, S.Pd)</option>
+                    </optgroup>
+
+                    <optgroup label="Selasa">
+                        <option value="Selasa - INFT (07:30 - 09:30)">07:30 - 09:30 | INFT (Yopy Adiantoro, S.Pd.)</option>
+                        <option value="Selasa - B INDO (10:00 - 12:00)">10:00 - 12:00 | B INDO (Nurhuda, S.Pd.)</option>
+                        <option value="Selasa - MAT UM (12:30 - 13:50)">12:30 - 13:50 | MAT UM (Lutvi Mahfudiyah, S.Si.)</option>
+                        <option value="Selasa - B JAWA (13:50 - 15:10)">13:50 - 15:10 | B JAWA (Titis Reka Anggraini, S.Pd.)</option>
+                    </optgroup>
+
+                    <optgroup label="Rabu">
+                        <option value="Rabu - PJOK (07:30 - 09:30)">07:30 - 09:30 | PJOK (Indriana Puspitasari, S.Pd)</option>
+                        <option value="Rabu - P AGM (10:00 - 12:00)">10:00 - 12:00 | P AGM (Dr. M. Nur Alam Fajar Syam, M.Pd)</option>
+                        <option value="Rabu - SJRH (12:30 - 13:50)">12:30 - 13:50 | SJRH (Defri Murain Palupiyana, S.Pd.)</option>
+                        <option value="Rabu - INFT (13:50 - 15:10)">13:50 - 15:10 | INFT (Yopy Adiantoro, S.Pd.)</option>
+                    </optgroup>
+
+                    <optgroup label="Kamis">
+                        <option value="Kamis - KIM (07:30 - 11:20)">07:30 - 11:20 | KIM (Syaikul Anam, S.Pd.)</option>
+                        <option value="Kamis - BIO (11:20 - 13:50)">11:20 - 13:50 | BIO (Nindia Ayutrisna, S.Pd)</option>
+                        <option value="Kamis - PPKN (13:50 - 15:10)">13:50 - 15:10 | PPKN (Wiwin Nardianto, S.Pd)</option>
+                    </optgroup>
+
+                    <optgroup label="Jumat">
+                        <option value="Jumat - BIO (07:00 - 08:20)">07:00 - 08:20 | BIO (Nindia Ayutrisna, S.Pd)</option>
+                        <option value="Jumat - MAT UM (08:20 - 09:55)">08:20 - 09:55 | MAT UM (Lutvi Mahfudiyah, S.Si.)</option>
+                        <option value="Jumat - PKWU (09:55 - 11:15)">09:55 - 11:15 | PKWU (Dian Fatma Budianda, S.Pd.)</option>
+                    </optgroup>
                 </select>
             </div>
 
-            <!-- Form Tambah Nama Siswa (Jika daftar siswa belum ada) -->
+            <!-- Form Tambah Nama Siswa -->
             <div class="card">
                 <h3>Daftar Siswa</h3>
                 <div class="input-group">
@@ -62,7 +93,7 @@
 
         <!-- 2. TAB PENGATURAN JADWAL -->
         <section id="tab-jadwal" class="tab-content">
-            <h2>Atur Jadwal Pelajaran</h2>
+            <h2>Jadwal Pelajaran XI - B</h2>
             
             <div class="card">
                 <form id="form-jadwal">
@@ -77,18 +108,39 @@
                     </select>
 
                     <label for="jam-jadwal">Jam Pelajaran:</label>
-                    <input type="time" id="jam-jadwal" required>
+                    <input type="text" id="jam-jadwal" placeholder="Contoh: 07:30 - 09:30" required>
 
-                    <label for="mapel-jadwal">Mata Pelajaran:</label>
+                    <label for="mapel-jadwal">Mata Pelajaran & Guru:</label>
                     <input type="text" id="mapel-jadwal" placeholder="Contoh: Matematika" required>
 
-                    <button type="submit" class="btn-primary">+ Simpan Jadwal</button>
+                    <button type="submit" class="btn-primary">+ Tambah Jadwal Baru</button>
                 </form>
             </div>
 
-            <h3>Daftar Jadwal Tersimpan</h3>
+            <h3>Daftar Jadwal Kelas XI - B</h3>
             <ul id="daftar-jadwal" class="list-container">
-                <!-- Daftar jadwal akan tampil di sini -->
+                <!-- Jadwal bawaan langsung tertulis di HTML -->
+                <li class="list-item"><div><strong>Senin (07:30 - 09:30)</strong><br><span>B ING - Laily Fadiyah Kahar, S.Pd.</span></div></li>
+                <li class="list-item"><div><strong>Senin (10:00 - 13:50)</strong><br><span>FIS - Reni Anjarwati, S.Pd</span></div></li>
+                <li class="list-item"><div><strong>Senin (13:50 - 15:10)</strong><br><span>SNBD - Yuda Eli Riyanto, S.Pd</span></div></li>
+                
+                <li class="list-item"><div><strong>Selasa (07:30 - 09:30)</strong><br><span>INFT - Yopy Adiantoro, S.Pd.</span></div></li>
+                <li class="list-item"><div><strong>Selasa (10:00 - 12:00)</strong><br><span>B INDO - Nurhuda, S.Pd.</span></div></li>
+                <li class="list-item"><div><strong>Selasa (12:30 - 13:50)</strong><br><span>MAT UM - Lutvi Mahfudiyah, S.Si.</span></div></li>
+                <li class="list-item"><div><strong>Selasa (13:50 - 15:10)</strong><br><span>B JAWA - Titis Reka Anggraini, S.Pd.</span></div></li>
+
+                <li class="list-item"><div><strong>Rabu (07:30 - 09:30)</strong><br><span>PJOK - Indriana Puspitasari, S.Pd</span></div></li>
+                <li class="list-item"><div><strong>Rabu (10:00 - 12:00)</strong><br><span>P AGM - Dr. M. Nur Alam Fajar Syam, M.Pd</span></div></li>
+                <li class="list-item"><div><strong>Rabu (12:30 - 13:50)</strong><br><span>SJRH - Defri Murain Palupiyana, S.Pd.</span></div></li>
+                <li class="list-item"><div><strong>Rabu (13:50 - 15:10)</strong><br><span>INFT - Yopy Adiantoro, S.Pd.</span></div></li>
+
+                <li class="list-item"><div><strong>Kamis (07:30 - 11:20)</strong><br><span>KIM - Syaikul Anam, S.Pd.</span></div></li>
+                <li class="list-item"><div><strong>Kamis (11:20 - 13:50)</strong><br><span>BIO - Nindia Ayutrisna, S.Pd</span></div></li>
+                <li class="list-item"><div><strong>Kamis (13:50 - 15:10)</strong><br><span>PPKN - Wiwin Nardianto, S.Pd</span></div></li>
+
+                <li class="list-item"><div><strong>Jumat (07:00 - 08:20)</strong><br><span>BIO - Nindia Ayutrisna, S.Pd</span></div></li>
+                <li class="list-item"><div><strong>Jumat (08:20 - 09:55)</strong><br><span>MAT UM - Lutvi Mahfudiyah, S.Si.</span></div></li>
+                <li class="list-item"><div><strong>Jumat (09:55 - 11:15)</strong><br><span>PKWU - Dian Fatma Budianda, S.Pd.</span></div></li>
             </ul>
         </section>
 
